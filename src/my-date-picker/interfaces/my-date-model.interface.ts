@@ -1,7 +1,7 @@
-import { IMyDate } from "./my-date.interface";
+import { IMyDateTime } from "./my-datetime.interface";
 
 export interface IMyDateModel {
-    date: IMyDate;
+    date: IMyDateTime;
     jsdate: Date;
     formatted: string;
     epoc: number;

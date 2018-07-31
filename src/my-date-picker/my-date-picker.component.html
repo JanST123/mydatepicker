@@ -1,4 +1,4 @@
-<div class="mydp" [ngStyle]="{'width': opts.showInputField ? opts.width : null, 'border': opts.inline ? 'none' : null}">
+<div class="mydp" [ngClass]="{'withtimepicker' : opts.withTimepicker}" [ngStyle]="{'width': opts.showInputField ? opts.width : null, 'border': opts.inline ? 'none' : null}">
     <div class="selectiongroup" *ngIf="!opts.inline">
         <input *ngIf="opts.showInputField" #inputBoxEl ngtype="text" class="selection" [attr.aria-label]="opts.ariaLabelInputField" (click)="opts.openSelectorOnInputClick&&!opts.editableDateField&&openBtnClicked()" [ngClass]="{'invaliddate': invalidDate&&opts.indicateInvalidDate, 'inputnoteditable': opts.openSelectorOnInputClick&&!opts.editableDateField, 'selectiondisabled': opts.componentDisabled}"
                placeholder="{{placeholder}}" [ngStyle]="{'height': opts.height, 'font-size': opts.selectionTxtFontSize}" [ngModel]="selectionDayTxt" (ngModelChange)="onUserDateInput($event)" [value]="selectionDayTxt" (keyup)="onCloseSelector($event)"
@@ -18,7 +18,7 @@
             </button>
         </div>
     </div>
-    <div class="selector" #selectorEl [ngStyle]="{'width': opts.selectorWidth, 'height' : opts.selectorHeight, 'bottom': getSelectorTopPosition()}" *ngIf="showSelector||opts.inline" [mydpfocus]="opts.inline?'0':'1'" [ngClass]="{'inlinedp': opts.inline, 'alignselectorright': opts.alignSelectorRight, 'selectorarrow': opts.showSelectorArrow&&!opts.inline, 'selectorarrowleft': opts.showSelectorArrow&&!opts.alignSelectorRight&&!opts.inline, 'selectorarrowright': opts.showSelectorArrow&&opts.alignSelectorRight&&!opts.inline}" (keyup)="onCloseSelector($event)" tabindex="0">
+    <div class="selector" #selectorEl [ngStyle]="{'width': opts.selectorWidth, 'height' : opts.selectorHeight + (opts.withTimepicker ? 115 : 0), 'bottom': getSelectorTopPosition()}" *ngIf="showSelector||opts.inline" [mydpfocus]="opts.inline?'0':'1'" [ngClass]="{'inlinedp': opts.inline, 'alignselectorright': opts.alignSelectorRight, 'selectorarrow': opts.showSelectorArrow&&!opts.inline, 'selectorarrowleft': opts.showSelectorArrow&&!opts.alignSelectorRight&&!opts.inline, 'selectorarrowright': opts.showSelectorArrow&&opts.alignSelectorRight&&!opts.inline}" (keyup)="onCloseSelector($event)" tabindex="0">
         <table class="header">
             <tr>
                 <td>
@@ -89,5 +89,49 @@
                 </tr>
             </tbody>
         </table>
+        
+        <table class="timepickertable" *ngIf="opts.withTimepicker">
+          <tbody>
+            <tr>
+              <td>
+                <button class="headerbtn mydpicon icon-mydpup headerbtnenabled" type="button" aria-label="Up" (click)="onHourShift(+1)"></button>
+              </td>
+              <td>&nbsp;</td>
+              <td>
+                <button class="headerbtn mydpicon icon-mydpup headerbtnenabled" type="button" aria-label="Up" (click)="onMinuteShift(+1)"></button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <input type="text" [ngModel]="selectedDate.hour" (ngModelChange)="onUserTimeInput($event, 'hour')"/>
+              </td>
+              <td>
+                &nbsp;:&nbsp;
+              </td>
+              <td>
+                <input type="text" style="display: none" [ngModel]="selectedDate.minute" (ngModelChange)="onUserTimeInput($event, 'minute')" />
+                <input type="text" [value]="('00' + selectedDate.minute).slice(-2)" (keyup)="onUserMinuteDisplayChange($event)" (change)="onUserMinuteDisplayChange($event)" />
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <button class="headerbtn mydpicon icon-mydpdown headerbtnenabled" type="button" aria-label="Down" (click)="onHourShift(-1)"></button>
+              </td>
+              <td>&nbsp;</td>
+              <td>
+                <button class="headerbtn mydpicon icon-mydpdown headerbtnenabled" type="button" aria-label="Down" (click)="onMinuteShift(-1)"></button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="donebutton" colspan="3">
+                <button (click)="onCloseSelector($event)">Done</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
     </div>
 </div>

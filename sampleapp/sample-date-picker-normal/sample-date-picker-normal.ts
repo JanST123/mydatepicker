@@ -15,8 +15,9 @@ export class SampleDatePickerNormal implements OnInit {
     @ViewChild('mydp') mydp: MyDatePicker;
 
     private myDatePickerNormalOptions: IMyDpOptions = {
+        withTimepicker: true,
         todayBtnTxt: 'Today',
-        dateFormat: 'dd.mm.yyyy',
+        dateFormat: 'dd.mm.yyyy hh:ii',
         firstDayOfWeek: 'mo',
         sunHighlight: true,
         markCurrentDay: true,
@@ -76,6 +77,12 @@ export class SampleDatePickerNormal implements OnInit {
 
     clearDate() {
         this.selectedDateNormal = '';
+    }
+    
+    onShowTimepicker(checked: boolean) {
+        let copy = this.getCopyOfOptions();
+        copy.withTimepicker = checked;
+        this.myDatePickerNormalOptions = copy;
     }
 
     onDisableComponent(checked: boolean) {

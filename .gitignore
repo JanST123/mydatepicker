@@ -6,3 +6,4 @@ build-sampleapp/
 test-output/
 npmdist/
 .tmpbuild/
+build/

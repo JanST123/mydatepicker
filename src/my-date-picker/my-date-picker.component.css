@@ -27,19 +27,22 @@
 
 .mydp .caltable,
 .mydp .monthtable,
-.mydp .yeartable {
+.mydp .yeartable,
+.mydp .timepickertable {
     border-radius: 0 0 4px 4px;
 }
 
 .mydp .caltable tbody tr:nth-child(6) td:first-child,
 .mydp .monthtable tbody tr:nth-child(4) td:first-child,
-.mydp .yeartable tbody tr:nth-child(7) td:first-child {
+.mydp .yeartable tbody tr:nth-child(7) td:first-child,
+.mydp .timepickertable tbody tr:nth-child(3) td:first-child {
     border-bottom-left-radius: 4px;
 }
 
 .mydp .caltable tbody tr:nth-child(6) td:last-child,
 .mydp .monthtable tbody tr:nth-child(4) td:last-child,
-.mydp .yeartable tbody tr:nth-child(7) td:last-child {
+.mydp .yeartable tbody tr:nth-child(7) td:last-child,
+.mydp .timepickertable tbody tr:nth-child(3) td:last-child {
     border-bottom-right-radius: 4px;
 }
 
@@ -248,13 +251,85 @@
     font-size: 14px;
 }
 
+.mydp.withtimepicker .caltable,
+.mydp.withtimepicker .monthtable,
+.mydp.withtimepicker .yeartable {
+  height: calc(100% - 30px - 115px);
+}
+
+.mydp .timepickertable {
+  table-layout: fixed;
+  width: 100%;
+  height: 90px;
+  background-color: #F6F6F6;
+  border-top: 1px solid #CCC;
+  font-size: 14px;
+}
+.mydp .timepickertable td {
+  position: relative;
+}
+.mydp .timepickertable td:first-child {
+  text-align: right;
+}
+
+.mydp .timepickertable td:nth-child(2) {
+  text-align: center;  
+  width: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.mydp .timepickertable td:nth-child(3) {
+  text-align: left;
+}
+
+.mydp .timepickertable td input {
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  text-align: center;
+  font-size: 1.875rem;
+}
+
+.mydp .timepickertable td button {
+  position: absolute;
+  width: 4rem;
+  font-size: 3rem;
+  background-color: transparent;
+}
+.mydp .timepickertable td:first-child button {
+  right: 0px;
+}
+.mydp .timepickertable td:nth-child(3) button {
+  left: 0px;
+}
+ 
+.mydp .timepickertable tr:first-child,
+.mydp .timepickertable tr:nth-child(3),
+.mydp .timepickertable tr:nth-child(4) {
+  height: 2.5rem;
+}
+.mydp .timepickertable tr:first-child button {
+  bottom: 3px;
+}
+.mydp .timepickertable tr:nth-child(3) button {
+  top: -10px;
+}
+.mydp td.donebutton {
+  text-align: center!important;
+}
+.mydp td.donebutton button {
+  position: relative;
+  font-size: 1em;
+}
+
 .mydp .caltable,
 .mydp .monthtable,
 .mydp .yeartable,
 .mydp .weekdaytitle,
 .mydp .daycell,
 .mydp .monthcell,
-.mydp .yearcell {
+.mydp .yearcell,
+.mydp .timepickertable {
     border-collapse: collapse;
     color: #003366;
     line-height: 1.1;
@@ -567,3 +642,5 @@
 .mydp .icon-mydpremove:before {
     content: "\e806";
 }
+
+

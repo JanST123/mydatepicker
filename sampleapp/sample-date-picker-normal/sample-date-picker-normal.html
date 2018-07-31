@@ -24,6 +24,14 @@
 <div>
     <table class="settingstable">
         <tr>
+          <td>
+            <label>
+                <span>with timepicker:</span>
+                <input style="cursor: pointer" type="checkbox" (change)="onShowTimepicker($event.currentTarget.checked)" [checked]="true">
+            </label>
+          </td>
+        </tr>
+        <tr>
             <td>
                 <label>
                     <span>Disable component:</span>

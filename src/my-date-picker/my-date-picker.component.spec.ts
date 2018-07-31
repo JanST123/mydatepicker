@@ -2715,7 +2715,7 @@ describe('MyDatePicker', () => {
 
     it('"selects" the date if the selected date is not the same as the input date on input changed and the input date is valid', () => {
         spyOn(comp, 'selectDate');
-        comp.selectedDate = { day: 31, month: 8, year: 2017 };
+        comp.selectedDate = { day: 31, month: 8, year: 2017, hour: 0, minute: 0 };
         comp.options = { dateFormat: 'dd-mm-yyyy' }
         comp.setOptions();
 

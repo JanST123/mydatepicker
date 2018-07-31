@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IMyDate } from "../interfaces/my-date.interface";
+import { IMyDateTime } from "../interfaces/my-datetime.interface";
 import { IMyDateRange } from "../interfaces/my-date-range.interface";
 import { IMyMonth } from "../interfaces/my-month.interface";
 import { IMyMonthLabels } from "../interfaces/my-month-labels.interface";
@@ -13,13 +14,17 @@ const MMM = "mmm";
 const D = "d";
 const DD = "dd";
 const YYYY = "yyyy";
+const H = "h";
+const HH = "hh";
+const I = "i";
+const II = "ii";
 
 @Injectable()
 export class UtilService {
     weekDays: Array<string> = ["su", "mo", "tu", "we", "th", "fr", "sa"];
 
-    isDateValid(dateStr: string, dateFormat: string, minYear: number, maxYear: number, disableUntil: IMyDate, disableSince: IMyDate, disableWeekends: boolean, disableWeekDays: Array<string>, disableDays: Array<IMyDate>, disableDateRanges: Array<IMyDateRange>, monthLabels: IMyMonthLabels, enableDays: Array<IMyDate>): IMyDate {
-        let returnDate: IMyDate = {day: 0, month: 0, year: 0};
+    isDateValid(dateStr: string, dateFormat: string, minYear: number, maxYear: number, disableUntil: IMyDateTime, disableSince: IMyDateTime, disableWeekends: boolean, disableWeekDays: Array<string>, disableDays: Array<IMyDateTime>, disableDateRanges: Array<IMyDateRange>, monthLabels: IMyMonthLabels, enableDays: Array<IMyDateTime>): IMyDateTime {
+        let returnDate: IMyDateTime = {day: 0, month: 0, year: 0, hour: 0, minute: 0};
         let daysInMonth: Array<number> = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         let isMonthStr: boolean = dateFormat.indexOf(MMM) !== -1;
         let delimeters: Array<string> = this.getDateFormatDelimeters(dateFormat);
@@ -28,13 +33,15 @@ export class UtilService {
         let year: number = this.getNumberByValue(dateValue[0]);
         let month: number = isMonthStr ? this.getMonthNumberByMonthName(dateValue[1], monthLabels) : this.getNumberByValue(dateValue[1]);
         let day: number = this.getNumberByValue(dateValue[2]);
+        let hour : number = dateValue.length > 3 ? this.getNumberByValue(dateValue[3]) : 0;
+        let minute : number = dateValue.length > 4 ? this.getNumberByValue(dateValue[4]) : 0;
 
-        if (month !== -1 && day !== -1 && year !== -1) {
+        if (month !== -1 && day !== -1 && year !== -1 && hour !== -1 && hour >= 0 && hour <= 23 && minute !== -1 && minute >= 0 && minute <= 59) {
             if (year < minYear || year > maxYear || month < 1 || month > 12) {
                 return returnDate;
             }
 
-            let date: IMyDate = {year: year, month: month, day: day};
+            let date: IMyDateTime = {year: year, month: month, day: day, hour: hour, minute: minute};
 
             if (this.isDisabledDay(date, minYear, maxYear, disableUntil, disableSince, disableWeekends, disableWeekDays, disableDays, disableDateRanges, enableDays)) {
                 return returnDate;
@@ -55,9 +62,12 @@ export class UtilService {
     }
 
     getDateValue(dateStr: string, dateFormat: string, delimeters: Array<string>): Array<IMyDateFormat> {
-        let del: string = delimeters[0];
-        if (delimeters[0] !== delimeters[1]) {
-            del = delimeters[0] + delimeters[1];
+        let del: string = "";
+        
+        for(let i : number=0; i<delimeters.length; ++i) {
+            if (del.indexOf(delimeters[i]) < 0) {
+                del+=delimeters[i];
+            }
         }
 
         let re: any = new RegExp("[" + del + "]");
@@ -74,6 +84,12 @@ export class UtilService {
             }
             if (df[i].indexOf(D) !== -1) {
                 da[2] = {value: ds[i], format: df[i]};
+            }
+            if (df[i].indexOf(H) !== -1) {
+                da[3] = {value: ds[i], format: df[i]};
+            }
+            if (df[i].indexOf(I) !== -1) {
+                da[4] = {value: ds[i], format: df[i]};
             }
         }
         return da;
@@ -106,7 +122,7 @@ export class UtilService {
     }
 
     getDateFormatDelimeters(dateFormat: string): Array<string> {
-        return dateFormat.match(/[^(dmy)]{1,}/g);
+        return dateFormat.match(/[^(dmyhi)]{1,}/g);
     }
 
     parseDefaultMonth(monthString: string): IMyMonth {
@@ -119,7 +135,7 @@ export class UtilService {
         return month;
     }
 
-    formatDate(date: IMyDate, dateFormat: string, monthLabels: IMyMonthLabels): string {
+    formatDate(date: IMyDateTime, dateFormat: string, monthLabels: IMyMonthLabels): string {
         let formatted: string = dateFormat.replace(YYYY, String(date.year));
 
         if (dateFormat.indexOf(MMM) !== -1) {
@@ -131,13 +147,28 @@ export class UtilService {
         else {
             formatted = formatted.replace(M, String(date.month));
         }
-
+        
         if (dateFormat.indexOf(DD) !== -1) {
             formatted = formatted.replace(DD, this.preZero(date.day));
         }
         else {
             formatted = formatted.replace(D, String(date.day));
         }
+        
+        if (dateFormat.indexOf(HH) !== -1) {
+            formatted = formatted.replace(HH, this.preZero(date.hour));
+        }
+        else if (dateFormat.indexOf(H) !== -1) {
+            formatted = formatted.replace(H, String(date.hour));
+        }
+        
+        if (dateFormat.indexOf(II) !== -1) {
+            formatted = formatted.replace(II, this.preZero(date.minute));
+        }
+        else if (dateFormat.indexOf(I) !== -1) {
+            formatted = formatted.replace(I, String(date.minute));
+        }
+        
         return formatted;
     }
 
@@ -145,7 +176,7 @@ export class UtilService {
         return val < 10 ? "0" + val : String(val);
     }
 
-    isDisabledDay(date: IMyDate, minYear: number, maxYear: number, disableUntil: IMyDate, disableSince: IMyDate, disableWeekends: boolean, disableWeekDays: Array<string>, disableDays: Array<IMyDate>, disableDateRanges: Array<IMyDateRange>, enableDays: Array<IMyDate>): boolean {
+    isDisabledDay(date: IMyDateTime, minYear: number, maxYear: number, disableUntil: IMyDateTime, disableSince: IMyDateTime, disableWeekends: boolean, disableWeekDays: Array<string>, disableDays: Array<IMyDateTime>, disableDateRanges: Array<IMyDateRange>, enableDays: Array<IMyDateTime>): boolean {
         for (let e of enableDays) {
             if (e.year === date.year && e.month === date.month && e.day === date.day) {
                 return false;
@@ -195,7 +226,7 @@ export class UtilService {
         return false;
     }
 
-    isMarkedDate(date: IMyDate, markedDates: Array<IMyMarkedDates>, markWeekends: IMyMarkedDate): IMyMarkedDate {
+    isMarkedDate(date: IMyDateTime, markedDates: Array<IMyMarkedDates>, markWeekends: IMyMarkedDate): IMyMarkedDate {
         for (let md of markedDates) {
             for (let d of md.dates) {
                 if (d.year === date.year && d.month === date.month && d.day === date.day) {
@@ -212,7 +243,7 @@ export class UtilService {
         return {marked: false, color: ""};
     }
 
-    isHighlightedDate(date: IMyDate, sunHighlight: boolean, satHighlight: boolean, highlightDates: Array<IMyDate>): boolean {
+    isHighlightedDate(date: IMyDateTime, sunHighlight: boolean, satHighlight: boolean, highlightDates: Array<IMyDateTime>): boolean {
         let dayNbr: number = this.getDayNumber(date);
         if (sunHighlight && dayNbr === 0 || satHighlight && dayNbr === 6) {
             return true;
@@ -231,28 +262,28 @@ export class UtilService {
         return Math.round(((d.getTime() - new Date(d.getFullYear(), 0, 4).getTime()) / 86400000) / 7) + 1;
     }
 
-    isMonthDisabledByDisableUntil(date: IMyDate, disableUntil: IMyDate): boolean {
+    isMonthDisabledByDisableUntil(date: IMyDateTime, disableUntil: IMyDateTime): boolean {
         return this.isInitializedDate(disableUntil) && this.getTimeInMilliseconds(date) <= this.getTimeInMilliseconds(disableUntil);
     }
 
-    isMonthDisabledByDisableSince(date: IMyDate, disableSince: IMyDate): boolean {
+    isMonthDisabledByDisableSince(date: IMyDateTime, disableSince: IMyDateTime): boolean {
         return this.isInitializedDate(disableSince) && this.getTimeInMilliseconds(date) >= this.getTimeInMilliseconds(disableSince);
     }
 
-    isInitializedDate(date: IMyDate): boolean {
+    isInitializedDate(date: IMyDateTime): boolean {
         return date.year !== 0 && date.month !== 0 && date.day !== 0;
     }
 
-    isSameDate(d1: IMyDate, d2: IMyDate): boolean {
-        return d1.year === d2.year && d1.month === d2.month && d1.day === d2.day;
+    isSameDate(d1: IMyDateTime, d2: IMyDateTime): boolean {
+        return d1.year === d2.year && d1.month === d2.month && d1.day === d2.day && d1.hour === d2.hour && d1.minute === d2.minute;
     }
 
-    getTimeInMilliseconds(date: IMyDate): number {
-        return new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0).getTime();
+    getTimeInMilliseconds(date: IMyDateTime): number {
+        return new Date(date.year, date.month - 1, date.day, date.hour, date.minute, 0, 0).getTime();
     }
 
-    getDayNumber(date: IMyDate): number {
-        return new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0).getDay();
+    getDayNumber(date: IMyDateTime): number {
+        return new Date(date.year, date.month - 1, date.day, date.hour, date.minute, 0, 0).getDay();
     }
 
     getWeekDays(): Array<string> {
