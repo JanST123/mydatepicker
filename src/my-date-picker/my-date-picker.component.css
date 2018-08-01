@@ -282,7 +282,7 @@
   text-align: left;
 }
 
-.mydp .timepickertable td input {
+.mydp .timepickertable > tbody > tr > td > input {
   width: 4rem;
   height: 4rem;
   border: none;
@@ -290,16 +290,16 @@
   font-size: 1.875rem;
 }
 
-.mydp .timepickertable td button {
+.mydp .timepickertable > tbody > tr > td > button {
   position: absolute;
   width: 4rem;
   font-size: 3rem;
   background-color: transparent;
 }
-.mydp .timepickertable td:first-child button {
+.mydp .timepickertable > tbody > tr > td:first-child > button {
   right: 0px;
 }
-.mydp .timepickertable td:nth-child(3) button {
+.mydp .timepickertable > tbody > tr > td:nth-child(3) > button {
   left: 0px;
 }
  
@@ -308,10 +308,10 @@
 .mydp .timepickertable tr:nth-child(4) {
   height: 2.5rem;
 }
-.mydp .timepickertable tr:first-child button {
+.mydp .timepickertable > tbody > tr:first-child > td > button {
   bottom: 3px;
 }
-.mydp .timepickertable tr:nth-child(3) button {
+.mydp .timepickertable > tbody > tr:nth-child(3) > td > button {
   top: -10px;
 }
 .mydp td.donebutton {
