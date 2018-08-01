@@ -17,6 +17,7 @@ export class SampleDatePickerNormal implements OnInit {
     private myDatePickerNormalOptions: IMyDpOptions = {
         withTimepicker: true,
         todayBtnTxt: 'Today',
+        doneBtnTxt: 'done',
         dateFormat: 'dd.mm.yyyy hh:ii',
         firstDayOfWeek: 'mo',
         sunHighlight: true,

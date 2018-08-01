@@ -1,6 +1,25 @@
-# mydatepicker
+# mydatetimepicker
 
-**Angular date picker**
+**About this fork**
+This fork adds an optional timepicker to the datepicker
+set Option "withTimepicker" to true, and add to the dateFormat:
+* h for 24-hour format without leading zero
+* hh for 24-hour format with leading zero
+* i for minute without leading zero
+* ii for minute with leading zero
+
+You can also add a text for the "done" button as the picker does not close on day select but on button click when timepicker is enabled.
+
+***Example with timepicker***
+  ```ts
+  private myDatePickerNormalOptions: IMyDpOptions = {
+        withTimepicker: true,
+        dateFormat: 'dd.mm.yyyy hh:ii',
+        doneBtnTxt: 'done'
+  }
+  ```
+
+**Angular datetime picker**
 
 [![Build Status](https://travis-ci.org/kekeh/mydatepicker.svg?branch=master)](https://travis-ci.org/kekeh/mydatepicker)
 [![codecov](https://codecov.io/gh/kekeh/mydatepicker/branch/master/graph/badge.svg)](https://codecov.io/gh/kekeh/mydatepicker)

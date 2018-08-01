@@ -7,3 +7,4 @@ test-output/
 npmdist/
 .tmpbuild/
 build/
+.DS_Store

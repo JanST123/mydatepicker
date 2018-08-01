@@ -12,6 +12,8 @@ export interface IMyOptions {
     dateFormat?: string;
     showTodayBtn?: boolean;
     todayBtnTxt?: string;
+    showDoneBtn?: boolean;
+    doneBtnTxt?: string;
     firstDayOfWeek?: string;
     satHighlight?: boolean;
     sunHighlight?: boolean;
