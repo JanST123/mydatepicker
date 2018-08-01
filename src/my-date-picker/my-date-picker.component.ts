@@ -7,7 +7,7 @@ import { UtilService } from "./services/my-date-picker.util.service";
 /*
 declare var require: any;
 const myDpStyles: string = require("./my-date-picker.component.css");
-const myDpTpl: string = require("./my-date-picker.component.html");
+const myDpTpl: string class require("./my-date-picker.component.html");
 */
 
 export const MYDP_VALUE_ACCESSOR: any = {

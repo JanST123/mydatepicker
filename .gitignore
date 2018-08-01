@@ -4,7 +4,6 @@ node_modules/
 typings/
 build-sampleapp/
 test-output/
-npmdist/
 .tmpbuild/
 build/
 .DS_Store

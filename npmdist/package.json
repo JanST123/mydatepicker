@@ -1,0 +1,32 @@
+{
+  "name": "mydatepicker",
+  "version": "2.6.5",
+  "description": "Angular date picker",
+  "keywords": [
+    "Angular",
+    "typescript",
+    "date picker"
+  ],
+  "author": "kekeh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kekeh/mydatepicker.git"
+  },
+  "scripts": {},
+  "main": "bundles/mydatepicker.umd.js",
+  "typings": "index.d.ts",
+  "module": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "LICENSE",
+    "FONT-LICENSE",
+    "package.json",
+    "README.md",
+    "dist",
+    "bundles"
+  ]
+}
