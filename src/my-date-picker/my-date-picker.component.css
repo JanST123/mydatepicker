@@ -283,8 +283,8 @@
 }
 
 .mydp .timepickertable input.myDpTimepickerInput {
-  width: 4rem;
-  height: 4rem;
+  width: 4rem!important;
+  height: 4rem!important;
   border: none;
   text-align: center;
   font-size: 1.875rem;
